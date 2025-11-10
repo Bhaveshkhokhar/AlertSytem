@@ -1,0 +1,5 @@
+{
+  "safety": { "escalate_if_count": 3, "auto_close_window_hr": 1 },
+  "feedback": { "escalate_if_count": 2, "auto_close_window_hr": 24 },
+  "compliance": { "escalate_if_count": 1,"auto_close_if": "document_valid", "auto_close_window_hr":1}
+}
