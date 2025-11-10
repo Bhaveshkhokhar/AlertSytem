@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -111,10 +112,11 @@ public class AlertService {
     public List<DriverAlertStatsDTO> top5Drivers() { return alertRepository.findTopOffenders(); }
 
     @Transactional
-    public void resolve(Integer alertId, String actor) {
+    public ResponseEntity<String> resolve(Integer alertId, String actor) {
         Alert a = alertRepository.findByAlertId(alertId);
         if (a == null) throw new RuntimeException("Alert not found");
-        if ("RESOLVED".equals(a.getStatus())) return;
+        if("AUTO-CLOSED".equals(a.getStatus()))return ResponseEntity.badRequest().body("Already Closed");
+        if ("RESOLVED".equals(a.getStatus())) return ResponseEntity.ok("Success");
         String prev = a.getStatus();
         a.setStatus("RESOLVED");
         a.setUpdatedAt(LocalDateTime.now());
@@ -128,6 +130,7 @@ public class AlertService {
                 .metadata("MANUAL")
                 .timestamp(LocalDateTime.now())
                 .build());
+        return ResponseEntity.ok("Success" );
     }
 
     public List<AlertTransition> history(Integer alertId) {

@@ -516,48 +516,56 @@ export default function Dashboard() {
                     </tr>
                   </thead>
                   <tbody>
-                    {sortedTopOffenders.map((driver) => (
-                      <tr key={driver.driverId}>
-                        <td>
-                          <code>{driver.driverId}</code>
-                        </td>
-                        <td>{driver.driverName}</td>
-                        <td className="text-center">
-                          <Badge bg="primary" pill>
-                            {driver.totalOpen}
-                          </Badge>
-                        </td>
-                        <td className="text-center">
-                          {driver.criticalCount > 0 && (
-                            <Badge bg="danger" pill>
-                              {driver.criticalCount}
-                            </Badge>
-                          )}
-                        </td>
-                        <td className="text-center">
-                          {driver.warningCount > 0 && (
-                            <Badge bg="warning" pill>
-                              {driver.warningCount}
-                            </Badge>
-                          )}
-                        </td>
-                        <td className="text-center">
-                          {driver.infoCount > 0 && (
-                            <Badge bg="info" pill>
-                              {driver.infoCount}
-                            </Badge>
-                          )}
-                        </td>
-                        <td>
-                          <div>
-                            {moment(driver.latestAlert).format("MMM D, YYYY")}
-                          </div>
-                          <small className="text-muted">
-                            {moment(driver.latestAlert).format("h:mm A")}
-                          </small>
+                    {sortedTopOffenders.length === 0 ? (
+                      <tr>
+                        <td colSpan="7" className="text-center text-muted">
+                          no driver with open alert
                         </td>
                       </tr>
-                    ))}
+                    ) : (
+                      sortedTopOffenders.map((driver) => (
+                        <tr key={driver.driverId}>
+                          <td>
+                            <code>{driver.driverId}</code>
+                          </td>
+                          <td>{driver.driverName}</td>
+                          <td className="text-center">
+                            <Badge bg="primary" pill>
+                              {driver.totalOpen}
+                            </Badge>
+                          </td>
+                          <td className="text-center">
+                            {driver.criticalCount > 0 && (
+                              <Badge bg="danger" pill>
+                                {driver.criticalCount}
+                              </Badge>
+                            )}
+                          </td>
+                          <td className="text-center">
+                            {driver.warningCount > 0 && (
+                              <Badge bg="warning" pill>
+                                {driver.warningCount}
+                              </Badge>
+                            )}
+                          </td>
+                          <td className="text-center">
+                            {driver.infoCount > 0 && (
+                              <Badge bg="info" pill>
+                                {driver.infoCount}
+                              </Badge>
+                            )}
+                          </td>
+                          <td>
+                            <div>
+                              {moment(driver.latestAlert).format("MMM D, YYYY")}
+                            </div>
+                            <small className="text-muted">
+                              {moment(driver.latestAlert).format("h:mm A")}
+                            </small>
+                          </td>
+                        </tr>
+                      ))
+                    )}
                   </tbody>
                 </Table>
               </div>

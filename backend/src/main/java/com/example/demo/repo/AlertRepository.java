@@ -37,7 +37,7 @@ public interface AlertRepository extends JpaRepository<Alert, Long> {
         )
         FROM Alert a
         JOIN Driver d ON a.driverId = d.driverId
-        WHERE a.status <> 'RESOLVED'
+        WHERE a.status <> 'RESOLVED' and a.status<>'AUTO-CLOSED'
         GROUP BY d.driverId, d.driverName
         ORDER BY COUNT(a) DESC
         limit 5

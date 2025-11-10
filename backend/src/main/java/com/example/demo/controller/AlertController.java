@@ -40,19 +40,19 @@ public class AlertController {
     public Alert get(@PathVariable Integer  alertId) { return alertService.getByAlertId(alertId); }
 
     @PutMapping("/{alertId}/resolve")
-    public String resolve(@PathVariable Integer  alertId) {
-        alertService.resolve(alertId,"manual");
-        return "success";
+    public ResponseEntity<String> resolve(@PathVariable Integer  alertId) {
+        return alertService.resolve(alertId,"manual");
     }
 
     @GetMapping("/{alertId}/history")
     public List<AlertTransition> history(@PathVariable Integer  alertId) {
         return alertService.history(alertId);
     }
+
+
     @GetMapping("/auto-close")
     public List<Alert> autoClose(){
         return alertService.autoCloseAlert();
-
     }
 
 }
