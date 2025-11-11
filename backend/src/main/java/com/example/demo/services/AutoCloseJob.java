@@ -4,6 +4,7 @@ import com.example.demo.model.AlertTransition;
 import com.example.demo.repo.AlertRepository;
 import com.example.demo.repo.TransitionRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,7 +12,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class AutoCloseJob {
@@ -23,6 +24,7 @@ public class AutoCloseJob {
     @Scheduled(fixedRate = 120000)
     @Transactional
     public void scan() {
+        log.info("scanning for auto_close");
         List<Alert> alerts = alertRepository.findAll();
         LocalDateTime now = LocalDateTime.now();
 

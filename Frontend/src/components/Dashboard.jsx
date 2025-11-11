@@ -89,6 +89,7 @@ export default function Dashboard() {
     return buckets;
   }, [trendDataWeekly]);
   useEffect(() => {
+    // Fetch all dashboard data once on mount and then every 2 minutes
     const fetchTrendData = async () => {
       const authToken = localStorage.getItem("token");
       try {
@@ -107,7 +108,103 @@ export default function Dashboard() {
         setTrendData([]);
       }
     };
+
+    const fetchRecentAlerts = async () => {
+      const authToken = localStorage.getItem("token");
+      try {
+        const res = await fetch("http://localhost:8080/api/alerts", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+            "Content-Type": "application/json",
+          },
+        });
+        if (!res.ok) throw new Error("Failed to fetch recent alerts");
+        const data = await res.json();
+        setRecentEvents(Array.isArray(data) ? data : []);
+      } catch (err) {
+        console.error("Error fetching recent alerts:", err);
+        setRecentEvents([]);
+      }
+    };
+
+    const fetchSeverityCounts = async () => {
+      const authToken = localStorage.getItem("token");
+      try {
+        const res = await fetch("http://localhost:8080/api/dashboard/stats", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+            "Content-Type": "application/json",
+          },
+        });
+        if (!res.ok) throw new Error("Failed to fetch severity counts");
+        const data = await res.json();
+        setSeverityCounts(data);
+        setLoading(false);
+      } catch (err) {
+        console.error("Error fetching severity counts:", err);
+        setLoading(false);
+      }
+    };
+
+    const fetchTopOffenders = async () => {
+      const authToken = localStorage.getItem("token");
+      try {
+        const res = await fetch("http://localhost:8080/api/dashboard/top", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+            "Content-Type": "application/json",
+          },
+        });
+        if (!res.ok) throw new Error("Failed to fetch top offenders");
+        const data = await res.json();
+        setTopOffenders(Array.isArray(data) ? data : []);
+      } catch (err) {
+        console.error("Error fetching top offenders:", err);
+        setTopOffenders([]);
+      }
+    };
+
+    const fetchWeeklyTrend = async () => {
+      const authToken = localStorage.getItem("token");
+      try {
+        const res = await fetch(
+          "http://localhost:8080/api/alerts/trends/weekly",
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        if (!res.ok) throw new Error("Failed to fetch weekly trend data");
+        const data = await res.json();
+        setTrendDataWeekly(Array.isArray(data) ? data : []);
+      } catch (err) {
+        console.error("Error fetching weekly trend data:", err);
+        setTrendDataWeekly([]);
+      }
+    };
+
+    // initial fetch
     fetchTrendData();
+    fetchRecentAlerts();
+    fetchSeverityCounts();
+    fetchTopOffenders();
+    fetchWeeklyTrend();
+
+    const interval = setInterval(() => {
+      fetchTrendData();
+      fetchRecentAlerts();
+      fetchSeverityCounts();
+      fetchTopOffenders();
+      fetchWeeklyTrend();
+    }, 120000); // 2 minutes
+
+    return () => clearInterval(interval);
   }, []);
 
   const [topOffenders, setTopOffenders] = useState([]);

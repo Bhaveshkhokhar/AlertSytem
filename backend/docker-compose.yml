@@ -1,0 +1,8 @@
+services:
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      # Use relative path, works best on Windows with Docker Desktop
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml

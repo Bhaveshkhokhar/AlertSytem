@@ -53,9 +53,10 @@ public class AlertService {
             if(rule.has("escalate_if_count")){
                 escalatecount = rule.get("escalate_if_count").asInt();
             }
-            if(alert.getEscalateCount()>=escalatecount){
+            if(alert.getEscalateCount()>escalatecount){
                 severity="CRITICAL";
 
+            }
             AlertTransition transition = new AlertTransition();
             transition.setAlertId(alert.getAlertId());
             transition.setSourceType(alert.getSourceType());
@@ -66,7 +67,6 @@ public class AlertService {
             transition.setTimestamp(LocalDateTime.now());
 
             transitionRepository.save(transition);
-            }
 
             // Update alert metadata and updatedAt
             alert.setStatus(status);

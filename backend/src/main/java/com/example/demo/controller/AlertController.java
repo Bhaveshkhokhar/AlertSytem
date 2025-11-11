@@ -5,6 +5,7 @@ import com.example.demo.model.Alert;
 import com.example.demo.model.AlertTransition;
 import com.example.demo.services.AlertService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@Slf4j
 @CrossOrigin(origins ="http://localhost:5173")
 @RequestMapping("/api/alerts")
 public class AlertController {
@@ -20,19 +22,25 @@ public class AlertController {
 
     @PostMapping
     public Alert create(@RequestBody AlertRequest req) {
+        log.info("creating alert");
         return alertService.ingest(req);
     }
 
     @GetMapping
-    public List<Alert> getTop20All() { return alertService.getTop20All(); }
+    public List<Alert> getTop20All() {
+        log.info("searching for top 20 Alert");
+        return alertService.getTop20All();
+    }
 
     @GetMapping("/trends")
     public ResponseEntity<List<Map<String, Object>>> getAlertTrends() {
+        log.info("Searching for trend daily");
         return ResponseEntity.ok(alertService.getTrendData());
     }
 
     @GetMapping("/trends/weekly")
     public ResponseEntity<List<Map<String, Object>>> getAlertTrendsweekly() {
+        log.info("Searching for trend weeekly");
         return ResponseEntity.ok(alertService.getTrendDataweekly());
     }
 
@@ -41,17 +49,20 @@ public class AlertController {
 
     @PutMapping("/{alertId}/resolve")
     public ResponseEntity<String> resolve(@PathVariable Integer  alertId) {
+        log.info("resolving manual");
         return alertService.resolve(alertId,"manual");
     }
 
     @GetMapping("/{alertId}/history")
     public List<AlertTransition> history(@PathVariable Integer  alertId) {
+        log.info("getting lice cycle of an alert");
         return alertService.history(alertId);
     }
 
 
     @GetMapping("/auto-close")
     public List<Alert> autoClose(){
+        log.info("getting auto close alert data");
         return alertService.autoCloseAlert();
     }
 

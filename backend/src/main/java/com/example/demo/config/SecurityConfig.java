@@ -45,7 +45,7 @@ public class SecurityConfig {
         http.cors(Customizer.withDefaults())
                 .csrf(cutomizer->cutomizer.disable())
                 .authorizeHttpRequests((request->request
-                        .requestMatchers("login")
+                        .requestMatchers("login","/actuator/prometheus")
                         .permitAll().anyRequest().authenticated()))
                 .httpBasic((Customizer.withDefaults()))
                 .sessionManagement(seesion->seesion.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
