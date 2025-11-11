@@ -24,7 +24,93 @@ Below is a detailed explanation of each endpoint and repository method with thei
 | **Runtime Environment** | JDK 17 (Recommended)             | Java version required to run the backend application. |
 | **Optional Monitoring** | Prometheus + Grafana (via Docker) | Used for monitoring Spring Boot metrics and system performance. |
 
+---
 
+### ⚡ AutoCloseJob (Scheduler)
+- **Purpose:** Automatically closes alerts older than the defined auto-close time (default 1 hour).  
+- **Runs Every:** 2 minutes.  
+- **Complexity:** O(n) — iterates over all active alerts.
+
+---
+
+### 🔔 AlertController (`/api/alerts`)
+1. **POST `/api/alerts`**  
+   - **Purpose:** Create or update an alert based on driver, vehicle, and source type.  
+   - **Input:** `AlertRequest` (JSON with driverId, vehicleId, type, sourceType, metadata).  
+   - **Response:** Returns created or updated `Alert` object.  
+   - **Complexity:** O(1) average (DB insert or update).
+
+2. **GET `/api/alerts`**  
+   - **Purpose:** Fetch the latest 20 alerts sorted by creation time.  
+   - **Response:** List of top 20 `Alert` objects.  
+   - **Complexity:** O(20) ≈ O(1).
+
+3. **GET `/api/alerts/trends`**  
+   - **Purpose:** Get daily alert trends for the past 7 days including totals, escalations, and auto-closed counts.  
+   - **Response:** List of maps containing `{date, totalAlerts, escalations, autoClosed}`.  
+   - **Complexity:** O(n) for number of trend days.
+
+4. **GET `/api/alerts/trends/weekly`**  
+   - **Purpose:** Get weekly aggregated alert data for last 4 weeks.  
+   - **Response:** List of `{week, totalAlerts, escalations, autoClosed}`.  
+   - **Complexity:** O(n) for number of weeks.
+
+5. **GET `/api/alerts/{alertId}`**  
+   - **Purpose:** Fetch details of a specific alert by ID.  
+   - **Response:** Single `Alert` object.  
+   - **Complexity:** O(1).
+
+6. **PUT `/api/alerts/{alertId}/resolve`**  
+   - **Purpose:** Resolve an alert manually (update status to "RESOLVED").  
+   - **Response:** `ResponseEntity<String>` message “Success” or error.  
+   - **Complexity:** O(1).
+
+7. **GET `/api/alerts/{alertId}/history`**  
+   - **Purpose:** Fetch full transition history (status changes) for a specific alert.  
+   - **Response:** List of `AlertTransition` objects sorted by timestamp.  
+   - **Complexity:** O(k), where k = transitions per alert.
+
+8. **GET `/api/alerts/auto-close`**  
+   - **Purpose:** Retrieve all alerts that were auto-closed by system rules.  
+   - **Response:** List of `Alert` objects.  
+   - **Complexity:** O(n), where n = number of closed alerts.
+
+---
+
+### 📊 DashboardController (`/api/dashboard`)
+1. **GET `/api/dashboard/stats`**  
+   - **Purpose:** Get total counts of alerts by severity (`CRITICAL`, `WARNING`, `INFO`).  
+   - **Response:** `StatsDto` object `{critical, warning, info}`.  
+   - **Complexity:** O(n), where n = total alerts.
+
+2. **GET `/api/dashboard/top`**  
+   - **Purpose:** Retrieve top 5 drivers with the highest number of unresolved alerts.  
+   - **Response:** List of `DriverAlertStatsDTO`.  
+   - **Complexity:** O(5) ≈ O(1).
+
+---
+
+### ⚙️ RulesController (`/api/rules`)
+1. **GET `/api/rules`**  
+   - **Purpose:** Fetch all alert rules (from DB or file).  
+   - **Response:** JSON of all rules.  
+   - **Complexity:** O(n), where n = number of rule entries.
+
+2. **POST `/api/rules/reload`**  
+   - **Purpose:** Reloads rule configurations from JSON file to memory.  
+   - **Response:** String `"reloaded"`.  
+   - **Complexity:** O(n), where n = rule count in file.
+
+---
+
+### 👤 UserController
+1. **POST `/login`**  
+   - **Purpose:** Authenticate admin user and generate JWT token.  
+   - **Input:** `{userName, password}`.  
+   - **Response:** `{authToken}` if valid; error otherwise.  
+   - **Complexity:** O(1) for authentication check.
+
+---
 ### 🔹 1. `AlertRepository`
 Handles CRUD and analytics operations related to Alerts.
 
