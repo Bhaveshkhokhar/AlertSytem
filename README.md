@@ -31,7 +31,7 @@ Handles CRUD and analytics operations related to Alerts.
 #### ➤ `findFirstBySourceTypeAndTypeAndDriverIdAndStatusNotInAndCreatedAtAfter(...)`
 - **Description:** Fetches the most recent alert of a specific type and source for a driver, excluding given statuses.
 - **Response:** `Optional<Alert>`
-- **Time Complexity:** `O(log n)` (query with filtering and ordering)
+- **Time Complexity:** `O(log n)` 
 - **Space Complexity:** `O(1)`
 
 #### ➤ `findTopOffenders()`
@@ -78,7 +78,7 @@ Handles the lifecycle changes (status transitions) of alerts.
 #### ➤ `findByAlertIdOrderByTimestampAsc(Integer alertId)`
 - **Description:** Fetches all transitions for an alert ordered by timestamp.
 - **Response:** `List<AlertTransition>`
-- **Time Complexity:** `O(m log m)` (for sorting if not indexed)
+- **Time Complexity:** `O(m log m)` 
 - **Space Complexity:** `O(m)`
 
 #### ➤ `getEscalationsAndAutoClosedByDate()`
