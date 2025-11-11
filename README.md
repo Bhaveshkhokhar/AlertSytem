@@ -3,7 +3,7 @@
 This Spring Boot application manages alerts, drivers, vehicles, and transitions in a monitoring system.  
 Below is a detailed explanation of each endpoint and repository method with their purpose, response, and complexity.
 
-here i have tell about the end point and for more detail refer to 
+here i have tell about the end point and for more detail refer to moveinsyn_documentation.pdf above
 
 ---
 
