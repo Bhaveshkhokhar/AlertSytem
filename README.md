@@ -7,6 +7,24 @@ here i have tell about the end point and for more detail refer to moveinsyn_docu
 
 ---
 
+## ⚙️ Tech Stack
+
+| **Category**        | **Technology Used**                 | **Purpose / Description** |
+|----------------------|-------------------------------------|----------------------------|
+| **Backend**          | Java Spring Boot                    | Provides RESTful APIs, business logic, and server-side processing. |
+| **Frontend**         | React.js + Bootstrap                | Builds the user interface with responsive design and dynamic components. |
+| **Database**         | MySQL                               | Stores alerts, drivers, vehicles, admins, and rule data. |
+| **ORM Layer**        | Spring Data JPA (Hibernate)         | Simplifies database CRUD operations through repository interfaces. |
+| **Security**         | JWT (JSON Web Token) Authentication | Ensures secure access and authorization for users and admins. |
+| **Build Tool**       | Maven                               | Manages dependencies and project builds for the backend. |
+| **UI Styling**       | Bootstrap                           | Provides responsive and consistent design for React components. |
+| **Logging**          | SLF4J + Logback                     | Used for logging API calls, exceptions, and system activity. |
+| **API Testing Tool** | Postman / cURL                      | For testing and validating API endpoints. |
+| **Version Control**  | Git + GitHub                        | Source code management and collaboration. |
+| **Runtime Environment** | JDK 17 (Recommended)             | Java version required to run the backend application. |
+| **Optional Monitoring** | Prometheus + Grafana (via Docker) | Used for monitoring Spring Boot metrics and system performance. |
+
+
 ### 🔹 1. `AlertRepository`
 Handles CRUD and analytics operations related to Alerts.
 
