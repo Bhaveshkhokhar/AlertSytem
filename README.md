@@ -19,7 +19,7 @@ here i have tell about the end point and for more detail refer to moveinsyn_docu
 | **Build Tool**       | Maven                               | Manages dependencies and project builds for the backend. |
 | **UI Styling**       | Bootstrap                           | Provides responsive and consistent design for React components. |
 | **Logging**          | SLF4J + Logback                     | Used for logging API calls, exceptions, and system activity. |
-| **API Testing Tool** | Postman / cURL                      | For testing and validating API endpoints. |
+| **API Testing Tool** | Insomnia / cURL                      | For testing and validating API endpoints. |
 | **Version Control**  | Git + GitHub                        | Source code management and collaboration. |
 | **Runtime Environment** | JDK 17 (Recommended)             | Java version required to run the backend application. |
 | **Optional Monitoring** | Prometheus + Grafana (via Docker) | Used for monitoring Spring Boot metrics and system performance. |
