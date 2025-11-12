@@ -350,8 +350,14 @@ export default function Dashboard() {
     const driverId = event.driverId || event.metadata?.driverId || "N/A";
     const vehicleId =
       event.vehicleId || event.metadata?.vehicle || event.vehicle || "N/A";
-    const metadata = event.metadata || {
+    const metadata = {
+      ...(event.metadata || {}),
       eventCount: event.eventCount || event.metadata?.eventCount || 1,
+      escalateCount:
+        event.escalateCount ||
+        event.escalations ||
+        event.metadata?.escalateCount ||
+        0,
       ruleTriggered:
         event.ruleTriggered ||
         event.metadata?.ruleTriggered ||
@@ -429,6 +435,7 @@ export default function Dashboard() {
           ...prev,
           history: Array.isArray(historyData) ? historyData : prev.history,
           metadata: {
+            ...(prev && prev.metadata ? prev.metadata : {}),
             driverId: alert.driverId,
             vehicleId: alert.vehicleId,
           },
